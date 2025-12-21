@@ -1,6 +1,6 @@
 # Local Player Avatar Usage Guide  
 # 本地玩家头像使用指南  
-**Source SDK 2013 (VGUI)**
+**Source SDK 2013 (VGUI 2)**
 # Not Steam Api
 # by Source App
 ---
