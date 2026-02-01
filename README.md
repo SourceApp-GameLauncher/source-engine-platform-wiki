@@ -7,6 +7,7 @@
 
 ## 📖 起源引擎跨平台介绍
 
+> 泄漏源码 基于 Invida 的 port （2018泄漏）
 > **Source** 是由 Valve 开发的 3D 游戏引擎，最早在 2004 年 6 月随 *Half-Life: Source* 发布，后续推出了 *Counter-Strike: Source* 和 *Half-Life 2*。  
 > 没有明确的版本号体系，而是以 **增量更新** 方式发布。
 
@@ -34,16 +35,18 @@
 
 - 🕹 Half-Life 2  
 - 🕹 HL2 Episode One  
-- 🕹 HL2 Episode Two  
+- 🕹 HL2 Episode Two
+- ☕ Entropyzero2
+- Rmui
 
 </td>
 <td>
 
 - 🕹 Portal  
-- 🕹 TF2  
+- 🕹 TF2 classic 
 - 🕹 Counter-Strike: Source  
 - 🕹 Day of Defeat: Source
-- ☕ Entropyzero2
+- Mapbase
 
 </td>
 </tr>
@@ -62,16 +65,10 @@
 ---
 
 ## 🛠 项目依赖
-`lua5.1` · `gamepadui` · `Chromium Embedded Framework (CEF)`  
-`waf` · `python3` · `gcc` · `clang17` · `ndkr16b` · `stb_image` · `libpng` · `lunasvg` · `kotlin`
+`waf` · `python3` · `clang19` · `ndkr28c` · `stb_image` · `libpng`
 
 ---
 
 ## 🚀 Platform 启动器
 - 开发者： **zzh の life**  
 - 语言： `kotlin` · `dart`
-
----
-
-## ⭐ 特别感谢
-💡 **感谢真纪会java 对于项目与 Wiki 的持续维护**
