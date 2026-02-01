@@ -1,6 +1,6 @@
 # 🎮 Source Engine Platform Wiki
 
-> 现维护者： **真纪会java** · **ZZH**  
+> 现维护者： **真纪会java**
 > Maintainers: **MakiJava** · **ZZH**
 
 ---
