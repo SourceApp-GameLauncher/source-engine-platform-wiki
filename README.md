@@ -13,7 +13,7 @@
 
 ⚠️ **源码基于 TF2 2018 泄露版，请勿用于商业用途！**  
 🔧 本项目使用 **waf** 构建系统，文档见 [waf.io/book](https://waf.io/book)。
-支持 aarch64 linux  &&  termux android 使用 ndk r28c 构建起源引擎
+支持 aarch64 linux / ndk r28c 构建起源引擎
 
 
 ---
