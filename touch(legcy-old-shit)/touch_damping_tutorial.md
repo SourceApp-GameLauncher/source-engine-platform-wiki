@@ -1,160 +1,322 @@
-# Touch 阻尼说明与调优
+# 🎮 Touch 阻尼系统说明与调优指南
+### Source / Android 触控视角平滑参数完整手册
 
-本文档汇总并解释代码中与“阻尼 / 平滑 / 惯性”有关的所有控制变量（ConVar），说明它们的数学意义、对触控/视角手感的实际影响、如何调节与调参建议，适合作为 Wiki 的简易教程。
+本页系统性梳理 **触控输入 → 视角旋转** 链路中所有与：
 
----
+- 阻尼（Damping）
+- 平滑（Smoothing）
+- 惯性（Inertia）
+- 滤波（Filter）
 
-## 📑 目录
+相关的 ConVar，并解释：
 
-1. 概览  
-2. 与阻尼相关的控制项清单（含默认值）  
-3. 算法与公式（逐步说明）  
-4. 每个指令的作用、效果与调节建议  
-5. 快速调参（预设）与测试方法  
-6. 常见问题与排查  
-7. 小结  
+- 数学原理
+- 实际手感影响
+- 调参逻辑
+- 推荐预设
 
----
+目标：
 
-## 1) 概览
-
-代码中存在两套“阻尼/平滑”实现：
-
-- **原始的 Look 阻尼 / 惯性（`touch_look_*` 系列）**  
-  用于视角移动的主阻尼，包含线性削弱、幂曲线、动量累积和惯性释放。
-
-- **新增的 ApplyTouchDamping（`touch_damping` + `touch_sensitivity`）**  
-  基于自适应指数平滑（EMA），将灵敏度与阻尼参数分离，方便直观调节。
-
-- **滤波器 `touch_filter`**  
-  在输出层进行一次帧间加权平均，进一步平滑但会增加延迟。
+> 让你能“可预测地”调手感，而不是盲猜数值。
 
 ---
 
-## 2) 控制项清单
+## 1. 总览架构
 
-| 指令                     | 默认值 | 功能描述 |
-|--------------------------|--------|----------|
-| `touch_look_damping`     | 0.1    | 削弱本帧输入，增大值=更平滑但更迟钝 |
-| `touch_look_damping_power` | 1.1  | 幂曲线调整：>1 压缩小输入，<1 放大小输入 |
-| `touch_look_inertia`     | 0.2    | 控制惯性释放速率，越大越直接，越小越漂移 |
-| `touch_filter`           | 0      | 启用帧间加权滤波（轻度平滑+延迟） |
-| `touch_precise_amount`   | 0.5    | 精确瞄准按钮时灵敏度乘子 |
-| `touch_sensitivity`（新）| 1.0    | 基础灵敏度，与阻尼独立 |
-| `touch_damping`（新）    | 0.3    | 自适应阻尼强度，0=无，1=最强 |
+当前存在 **两套平滑系统 + 一层滤波**：
+
+```
+原始输入
+   ↓
+Look Damping（线性 + 幂曲线 + 惯性）
+   ↓
+ApplyTouchDamping（自适应 EMA）
+   ↓
+touch_filter（帧间滤波，可选）
+   ↓
+最终视角
+```
+
+### 分工
+
+| 模块 | 职责 |
+|--------|--------|
+| touch_look_* | 主阻尼 + 惯性 |
+| touch_damping | 自适应平滑（新方案） |
+| touch_filter | 最终滤波 |
+| touch_sensitivity | 纯灵敏度倍率 |
 
 ---
 
-## 3) 算法与公式
+## 2. 控制项速查表
 
-### 🔹 原始 Look 阻尼（核心伪代码）
+| 指令 | 默认 | 类型 | 影响 |
+|--------|--------|--------|--------|
+| touch_look_damping | 0.1 | 线性阻尼 | 输入削弱 |
+| touch_look_damping_power | 1.1 | 幂曲线 | 小动作灵敏度 |
+| touch_look_inertia | 0.2 | 惯性 | 拖尾感 |
+| touch_filter | 0 | 滤波 | 抗抖但增加延迟 |
+| touch_precise_amount | 0.5 | 倍率 | 精准模式 |
+| touch_sensitivity | 1.0 | 灵敏度 | 总速度 |
+| touch_damping | 0.3 | 自适应阻尼 | 动态平滑 |
+
+---
+
+## 3. 核心算法解析
+
+### 3.1 原始 Look 阻尼
 
 ```cpp
 float damped = raw * (1 - damping);
+
 if (dampingPower != 1.0f)
     damped = copysignf(powf(fabsf(damped), dampingPower), damped);
 
 remaining += damped;
+
 frame = remaining * inertia * (frameTime / 0.016f);
+
 remaining -= frame;
 ```
 
-- `damping`：削弱输入幅度。  
-- `dampingPower`：幂曲线，调节小动作灵敏度。  
-- `inertia`：控制惯性释放速度。  
+### 数学含义
 
-### 🔹 新的 ApplyTouchDamping
+分三步：
+
+① 线性削弱
+```
+input × (1 - damping)
+```
+
+② 幂曲线变形
+```
+|x|^power
+```
+
+③ 惯性释放（动量积分）
+```
+remaining → 慢慢释放到 frame
+```
+
+### 体感总结
+
+| 参数 | 手感变化 |
+|--------|------------|
+| damping ↑ | 更稳但迟钝 |
+| power ↑ | 小动作更细腻 |
+| inertia ↓ | 更拖泥带水 |
+| inertia ↑ | 更跟手 |
+
+---
+
+## 3.2 新的 ApplyTouchDamping（推荐）
 
 ```cpp
 float velocity = fabs(raw - prev);
-float adaptiveAlpha = clamp(0.1f + velocity * (1 - damping), 0.1f, 1.0f);
-return prev + adaptiveAlpha * (raw - prev);
+float alpha = clamp(0.1f + velocity * (1 - damping), 0.1f, 1.0f);
+return prev + alpha * (raw - prev);
 ```
 
-- 小动作 → 阻尼强（更稳）  
-- 大动作 → 跟随快（减少延迟）  
+### 原理
+
+这是 **EMA（指数移动平均）自适应版**：
+
+- 小速度 → 小 alpha → 强平滑
+- 大速度 → 大 alpha → 快速跟手
+
+### 优点
+
+相比旧系统：
+
+- 不影响最大速度
+- 不耦合灵敏度
+- 更自然
+- 延迟更低
+
+实战体验明显更好。
+
+👉 强烈推荐主要依赖 `touch_damping` 调节。
 
 ---
 
-## 4) 指令详解与调节建议
+## 4. 每个参数怎么调（实战解释）
 
-### `touch_look_damping`
-- **作用**：削弱输入，增强平滑度。  
-- **建议范围**：0.0–0.4。  
+### touch_look_damping
+主阻尼强度。
 
-### `touch_look_damping_power`
-- **作用**：调整小幅输入响应。  
-- **建议范围**：1.0–1.3。  
+- 太低 → 抖动明显
+- 太高 → 像拖泥
 
-### `touch_look_inertia`
-- **作用**：控制惯性释放速度。  
-- **建议范围**：0.1–0.6。  
-
-### `touch_filter`
-- **作用**：帧间滤波，进一步平滑。  
-- **建议**：输入噪声明显时开启。  
-
-### `touch_precise_amount`
-- **作用**：瞄准时降低灵敏度。  
-- **建议范围**：0.2–0.6。  
-
-### `touch_sensitivity`（新）
-- **作用**：基础灵敏度，不影响阻尼。  
-
-### `touch_damping`（新）
-- **作用**：自适应阻尼，分离灵敏度和平滑度。  
-- **建议范围**：0.2–0.4。  
+建议：
+```
+0.05 – 0.15
+```
 
 ---
 
-## 5) 快速调参与预设
+### touch_look_damping_power
+微调小幅动作精度。
 
-### 🔧 调参流程
-1. 关闭滤波（`touch_filter 0`）。  
-2. 固定灵敏度（`touch_sensitivity 1.0`）。  
-3. 从 `touch_look_damping 0.0` 开始逐步增加。  
-4. 根据需要调整 `touch_look_inertia`。  
-5. 若要小动作稳，大动作快 → 使用 `touch_damping`。  
-6. 最后可再开 `touch_filter` 做微调。  
+- >1：微动更精细（推荐）
+- <1：微动放大（不推荐）
 
-### 🌟 预设示例
+建议：
+```
+1.05 – 1.2
+```
 
-- **低延迟**  
-```text
-touch_look_damping 0.0
-touch_look_inertia 0.1
+---
+
+### touch_look_inertia
+惯性拖尾感。
+
+- 小 → 电影感拖尾
+- 大 → 电竞风跟手
+
+建议：
+```
+0.15 – 0.35
+```
+
+---
+
+### touch_filter
+简单帧平均：
+
+```
+(prev + current) / 2
+```
+
+副作用：
+- + 平滑
+- + 延迟
+
+建议：
+- 高帧率设备：关
+- 低端机抖动：开
+
+---
+
+### touch_sensitivity（新）
+
+只负责：
+
+> 速度倍率
+
+完全不影响阻尼。
+
+这是 **唯一应该改灵敏度的地方**。
+
+---
+
+### touch_damping（新，核心推荐）
+
+自适应阻尼强度：
+
+- 0 = 无平滑
+- 1 = 强平滑
+
+建议：
+```
+0.2 – 0.4（甜点区）
+```
+
+实战：
+
+- 0.25 → 电竞
+- 0.3 → 平衡
+- 0.4 → 稳定电影感
+
+---
+
+## 5. 标准调参流程（强烈推荐）
+
+严格按顺序：
+
+```
+① touch_filter 0
+② 固定 touch_sensitivity
+③ 调 touch_damping（主手感）
+④ 微调 look_damping / inertia
+⑤ 最后再考虑 touch_filter
+```
+
+⚠️ 不要同时改多个，否则无法判断因果。
+
+---
+
+## 6. 预设配置
+
+### ⚡ 低延迟 / 竞技
+
+```
+touch_sensitivity 1.0
+touch_damping 0.2
+touch_look_damping 0.03
+touch_look_inertia 0.4
 touch_filter 0
 ```
 
-- **推荐平衡**  
-```text
+---
+
+### ⭐ 推荐平衡（默认建议）
+
+```
+touch_sensitivity 1.0
+touch_damping 0.3
 touch_look_damping 0.08
 touch_look_damping_power 1.1
+touch_look_inertia 0.25
+touch_filter 0
+```
+
+---
+
+### 🎬 电影感顺滑
+
+```
+touch_sensitivity 0.9
+touch_damping 0.4
+touch_look_damping 0.2
 touch_look_inertia 0.2
 touch_filter 1
 ```
 
-- **电影感平滑**  
-```text
-touch_look_damping 0.3
-touch_look_damping_power 1.2
-touch_look_inertia 0.35
-touch_filter 1
-```
+---
+
+## 7. 常见问题
+
+### Q：感觉“又慢又粘”
+→ damping 太高 或 filter 开着
 
 ---
 
-## 6) 常见问题与排查
-
-- **重复定义错误**：确保 `touch_sensitivity`/`touch_damping` 只在一个 `.cpp` 定义，其他地方用 `extern`。  
-- **阻尼影响灵敏度**：使用新参数 `touch_sensitivity + touch_damping` 组合，避免耦合。  
-- **帧率不同手感不一致**：检查 `inertia` 设置，按需在高帧率下减小。  
+### Q：抖动严重
+→ damping 太低 或 帧率不稳
 
 ---
 
-## 7) 小结
+### Q：不同帧率手感不同
+→ inertia 依赖 frameTime，需适当调高
 
-- `touch_look_*` 系列 → 原始阻尼 + 惯性。  
-- `touch_filter` → 额外滤波。  
-- 新的 `touch_sensitivity` + `touch_damping` → 分离灵敏度和平滑度，更直观调参。  
-- 推荐流程：固定灵敏度 → 增加阻尼 → 调整惯性 → 启用滤波微调。  
+---
+
+### Q：灵敏度变低了
+→ 别动 damping，改 sensitivity
+
+---
+
+## 8. 最终建议（经验总结）
+
+实战经验：
+
+- 新系统 > 旧系统
+- 优先调 `touch_damping`
+- 旧 look_* 只做细节微调
+- touch_filter 最后再用
+
+一句话：
+
+> sensitivity 决定“多快”，damping 决定“多稳”。
+
+两者职责分离，手感才可控。
