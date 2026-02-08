@@ -1,74 +1,214 @@
 # 🎮 Source Engine Platform Wiki
+### Source Engine 跨平台项目文档
 
-> 现维护者： **真纪会java**
-> Maintainers: **MakiJava** · **ZZH**
-
----
-
-## 📖 起源引擎跨平台介绍
-
-> 泄漏源码 基于 Invida 的 port （2018泄漏）
-> **Source** 是由 Valve 开发的 3D 游戏引擎，最早在 2004 年 6 月随 *Half-Life: Source* 发布，后续推出了 *Counter-Strike: Source* 和 *Half-Life 2*。  
-> 没有明确的版本号体系，而是以 **增量更新** 方式发布。
-
-⚠️ **源码基于 TF2 2018 泄露版，请勿用于商业用途！**  
-🔧 本项目使用 **waf** 构建系统，文档见 [waf.io/book](https://waf.io/book)。
-支持 aarch64 linux / ndk r28c 构建起源引擎
-
+> 维护者：真纪会java（MakiJava） · ZZH
 
 ---
 
-## 🚫 须知（重要）
-> ⚠️ **以下内容请务必阅读**
- 
-- 📱 跨平台仅 **Android** 版发布 Release  
-- 💰 严禁商业用途  
-- 🔄 暂不兼容 **Valve 20th** 更新  
+## 1. 项目概述
+
+本项目基于 **Source Engine (TF2 2018 泄露版本代码)** 进行移植与跨平台适配，目标：
+
+- 在 Linux / Android (aarch64) 上运行 Source 系列游戏
+- 统一构建流程
+- 提供轻量级启动器与资源兼容层
+- 支持 Mod / 社区内容扩展
+
+### 引擎背景
+
+**Source Engine** 由 Valve 开发：
+
+- 2004：Half-Life: Source
+- 2004：Counter-Strike: Source
+- 2004：Half-Life 2
+
+特性：
+
+- 无明确大版本号
+- 采用增量迭代式更新
+- 同一引擎分支高度兼容
 
 ---
 
-## 🎯 支持游戏
+## ⚠️ 法律与使用声明（必须阅读）
 
-<table>
-<tr>
-<td>
+> ⚠️ 本仓库仅供学习 / 研究 / 个人用途
 
-- 🕹 Half-Life 2  
-- 🕹 HL2 Episode One  
-- 🕹 HL2 Episode Two
-- ☕ Entropyzero2
+- 源码基于 **TF2 2018 泄露版本**
+- ❌ 严禁商业用途
+- ❌ 不得用于盈利发行
+- ❌ 不提供官方支持
+
+使用风险自行承担。
+
+---
+
+## 2. 构建系统
+
+本项目使用：
+
+```
+waf + python3 + clang + Android NDK
+```
+
+### 官方文档
+
+https://waf.io/book
+
+### 支持环境
+
+| 平台 | 状态 |
+|--------|--------|
+| Linux (aarch64) | ✅ 支持 |
+| Android (NDK r28c) | ✅ 支持 |
+| Windows | ⚠️ 非主要目标 |
+| Valve 20th 更新 | ❌ 暂不兼容 |
+
+---
+
+## 3. 发布策略
+
+当前仅发布：
+
+- 📱 Android Release 版本
+
+原因：
+
+- 维护成本可控
+- Android 需求最高
+- Linux 主要作为开发/调试环境
+
+---
+
+## 4. 支持游戏 / Mod
+
+### 官方游戏
+
+- Half-Life 2
+- HL2 Episode One
+- HL2 Episode Two
+- Portal
+- Counter-Strike: Source
+- Day of Defeat: Source
+
+### 社区项目 / Mod
+
+- TF2 Classic
+- Entropy : Zero 2
+- Mapbase
 - Rmui
 
-</td>
-<td>
+---
 
-- 🕹 Portal  
-- 🕹 TF2 classic 
-- 🕹 Counter-Strike: Source  
-- 🕹 Day of Defeat: Source
-- Mapbase
+## 5. 功能特性
 
-</td>
-</tr>
-</table>
+### UI / 输入
 
-> ✅ 全部支持 **gamepadui** 和 **Steam Workshop 创意工坊(fake/伪)** 完全支持png加载
+- ✅ GamepadUI
+- ✅ 手柄完整支持
+
+### 内容系统
+
+- ✅ Fake Steam Workshop（本地创意工坊模拟）
+- ✅ PNG 直接加载（无需 VTF 转换，节省流程）
+
+### 跨平台能力
+
+- Android ARM64
+- Linux ARM64
+- 同一资源包复用
 
 ---
 
-## 🙏 致谢开发者
-- 👤 [真纪会java](https://github.com/KonuriMakiJava)  
-- 👤 [ItzVladik](https://github.com/ItzVladik)  
-- 👤 ZZH *(this account)*  
-- 👤 [nillerusr](https://github.com/nillerusr)  
+## 6. 项目依赖
+
+```
+waf
+python3
+clang 19
+Android NDK r28c
+stb_image
+libpng
+```
+
+说明：
+
+- stb_image：快速图片解码
+- libpng：PNG 支持
+- clang：统一编译链
 
 ---
 
-## 🛠 项目依赖
-`waf` · `python3` · `clang19` · `ndkr28c` · `stb_image` · `libpng`
+## 7. 启动器（Platform Launcher）
+
+### 信息
+
+- 开发者：zzh の life
+- 语言：Kotlin + Dart
+
+### 作用
+
+- 游戏管理
+- 资源加载
+- 启动参数控制
+- 多 Mod 切换
+- Android 端适配层
+
+属于：
+
+> 引擎外壳 / 平台层，而非核心引擎代码
 
 ---
 
-## 🚀 Platform 启动器
-- 开发者： **zzh の life**  
-- 语言： `kotlin` · `dart`
+## 8. 贡献者
+
+- 真纪会java — https://github.com/KonuriMakiJava
+- ItzVladik — https://github.com/ItzVladik
+- ZZH
+- nillerusr — https://github.com/nillerusr
+
+感谢所有参与移植与适配的开发者。
+
+---
+
+## 9. 快速开始（TL;DR）
+
+```
+git clone
+python waf configure
+python waf build
+python waf install
+```
+
+Android：
+
+```
+使用 NDK r28c
+目标架构：arm64-v8a
+```
+
+---
+
+## 10. 项目定位总结
+
+这是一个：
+
+- 学习型
+- 移植型
+- 社区驱动
+- 非商业
+
+的 Source Engine 跨平台方案。
+
+目标是：
+
+> 让老引擎在新平台继续可用，而不是重写引擎。
+
+如果你需要：
+
+- 移植
+- Mod 适配
+- Android 运行
+- 轻量 Launcher
+
+本项目就是为此存在。
