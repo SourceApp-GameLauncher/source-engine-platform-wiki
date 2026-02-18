@@ -171,25 +171,7 @@ libpng
 
 ---
 
-## 9. 快速开始（TL;DR）
-
-```
-git clone
-python waf configure
-python waf build
-python waf install
-```
-
-Android：
-
-```
-使用 NDK r28c
-目标架构：arm64-v8a
-```
-
----
-
-## 10. 项目定位总结
+## 9. 项目定位总结
 
 这是一个：
 
