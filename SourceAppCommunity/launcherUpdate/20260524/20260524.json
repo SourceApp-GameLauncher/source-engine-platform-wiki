@@ -4,7 +4,7 @@
     "intro": "Improved GamepadUI and performance fixes.",
     "versionType": "GitHub",
     "translator": "ZZH",
-    "imageFileName": "ez2.jpg",
+    "imageFileName": "banners/ez2.jpg",
     "officialLink": "https://github.com/EntropyZero2",
     "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
     "version": "1.0.0"
@@ -14,7 +14,7 @@
     "intro": "Updated for modern Android devices.",
     "versionType": "GitHub",
     "translator": "MakiJava",
-    "imageFileName": "halflife2.jpg",
+    "imageFileName": "banners/cache.png",
     "officialLink": "https://store.steampowered.com/app/220/HalfLife_2/",
     "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
     "version": "1.17.0026"
