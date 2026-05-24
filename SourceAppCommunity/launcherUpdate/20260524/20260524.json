@@ -1,22 +1,12 @@
 [
   {
-    "title": "Entropy Zero 2",
-    "intro": "Improved GamepadUI and performance fixes.",
+    "title": "2.0.09",
+    "intro": "更新内容: \n 1.ui部分重写 架构重写 \n 2.更新日志cfg编辑挂载目录功能 \n 3.修正部分错误 \n 引擎更新: \n 1.修正gamepadui错误 \n 2.支持挂载目录jni",
     "versionType": "GitHub",
-    "translator": "ZZH",
-    "imageFileName": "banners/ez2.jpg",
-    "officialLink": "https://github.com/EntropyZero2",
-    "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
-    "version": "1.0.0"
-  },
-  {
-    "title": "Half-Life 2",
-    "intro": "Updated for modern Android devices.",
-    "versionType": "GitHub",
-    "translator": "MakiJava",
+    "translator": "无翻译",
     "imageFileName": "banners/cache.png",
     "officialLink": "https://store.steampowered.com/app/220/HalfLife_2/",
     "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
-    "version": "1.17.0026"
+    "version": "1.18.42"
   }
 ]
