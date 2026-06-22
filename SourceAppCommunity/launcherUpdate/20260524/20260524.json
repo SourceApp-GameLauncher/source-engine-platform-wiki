@@ -1,12 +1,43 @@
 [
-  {
-    "title": "2.0.09",
-    "intro": "更新内容: \n 1.ui部分重写 架构重写 \n 2.更新日志cfg编辑挂载目录功能 \n 3.修正部分错误 \n 引擎更新: \n 1.修正gamepadui错误 \n 2.支持挂载目录jni",
-    "versionType": "GitHub",
-    "translator": "无翻译",
-    "imageFileName": "banners/cache.png",
-    "officialLink": "https://store.steampowered.com/app/220/HalfLife_2/",
-    "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
-    "version": "1.18.42"
-  }
+    {
+        "title": "2.0.13",
+        "intro": "引擎更新: Entropy Zero 2 构建系统更新，不是什么大更新，引擎同步1.18.43 SourceApp",
+        "versionType": "GitHub",
+        "translator": "无翻译",
+        "imageFileName": "banners/ez2-1.jpg",
+        "officialLink": "https://entropy-zero.fandom.com/wiki/Entropy:_Zero_2",
+        "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
+        "version": "1.18.43"
+    },
+    {
+        "title": "2.0.13",
+        "intro": "引擎更新: 支持 Nightmare House2 2011 版本，基于SourceApp",
+        "versionType": "GitHub",
+        "translator": "无翻译",
+        "imageFileName": "banners/nh2c40083.jpg",
+        "officialLink": "https://nh2.wecreatestuff.com",
+        "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
+        "version": "1.18.43"
+    },
+    {
+        "title": "2.0.13",
+        "intro": "更新内容: \n 1.ui部分更新 \n 2.更新日志cfg编辑挂载节目UI \n 3.启动器性能优化  \n 4.支持成就查看 \n 5.结束app图标联动（Ww鸣潮） \n 引擎更新: \n 1.支持gamepadui奖励地图",
+        "versionType": "GitHub",
+        "translator": "无翻译",
+        "imageFileName": "banners/cache.png",
+        "officialLink": "https://store.steampowered.com/app/220/HalfLife_2/",
+        "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
+        "version": "1.18.43"
+    },
+    {
+        "title": "2.0.09",
+        "intro": "更新内容: \n 1.ui部分重写 架构重写 \n 2.更新日志cfg编辑挂载目录功能 \n 3.修正部分错误 \n 引擎更新: \n 1.修正gamepadui错误 \n 2.支持挂载目录jni",
+        "versionType": "GitHub",
+        "translator": "无翻译",
+        "imageFileName": "banners/cache.png",
+        "officialLink": "https://store.steampowered.com/app/220/HalfLife_2/",
+        "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
+        "version": "1.18.42"
+    },
+    null
 ]
