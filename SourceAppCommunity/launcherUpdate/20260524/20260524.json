@@ -10,6 +10,16 @@
         "version": "1.18.43"
     },
     {
+        "title": "2.0.12",
+        "intro": "性能优化 UI 改动",
+        "versionType": "GitHub",
+        "translator": "无翻译",
+        "imageFileName": "banners/cache.png",
+        "officialLink": "https://entropy-zero.fandom.com/wiki/Entropy:_Zero_2",
+        "wikiLink": "https://github.com/SourceApp-GameLauncher/source-engine-platform-wiki",
+        "version": "1.18.43"
+    },
+    {
         "title": "2.0.11",
         "intro": "引擎更新：支持 Nightmare House 2 (2011) 版本，基于 SourceApp。",
         "versionType": "GitHub",
