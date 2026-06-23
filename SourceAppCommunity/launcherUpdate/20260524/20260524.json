@@ -10,7 +10,7 @@
         "version": "1.18.43"
     },
     {
-        "title": "2.0.13",
+        "title": "2.0.11",
         "intro": "引擎更新：支持 Nightmare House 2 (2011) 版本，基于 SourceApp。",
         "versionType": "GitHub",
         "translator": "无翻译",
@@ -20,7 +20,7 @@
         "version": "1.18.43"
     },
     {
-        "title": "2.0.13",
+        "title": "2.0.10",
         "intro": "更新内容：\n1. 优化 UI 界面；\n2. 更新日志配置编辑挂载目录 UI；\n3. 提升启动器性能；\n4. 支持成就查看；\n5. 结束应用图标联动（与鸣潮联动）。\n引擎更新：\n1. 支持 GamepadUI 奖励地图。",
         "versionType": "GitHub",
         "translator": "无翻译",
