@@ -1,7 +1,7 @@
 [
     {
         "title": "2.0.13",
-        "intro": "引擎更新: Entropy Zero 2 构建系统更新，不是什么大更新，引擎同步1.18.43 SourceApp",
+        "intro": "引擎更新：更新 Entropy Zero 2 构建系统，同步引擎至 1.18.43 (SourceApp)。",
         "versionType": "GitHub",
         "translator": "无翻译",
         "imageFileName": "banners/ez2-1.jpg",
@@ -11,7 +11,7 @@
     },
     {
         "title": "2.0.13",
-        "intro": "引擎更新: 支持 Nightmare House2 2011 版本，基于SourceApp",
+        "intro": "引擎更新：支持 Nightmare House 2 (2011) 版本，基于 SourceApp。",
         "versionType": "GitHub",
         "translator": "无翻译",
         "imageFileName": "banners/nh2c40083.jpg",
@@ -21,7 +21,7 @@
     },
     {
         "title": "2.0.13",
-        "intro": "更新内容: \n 1.ui部分更新 \n 2.更新日志cfg编辑挂载节目UI \n 3.启动器性能优化  \n 4.支持成就查看 \n 5.结束app图标联动（Ww鸣潮） \n 引擎更新: \n 1.支持gamepadui奖励地图",
+        "intro": "更新内容：\n1. 优化 UI 界面；\n2. 更新日志配置编辑挂载目录 UI；\n3. 提升启动器性能；\n4. 支持成就查看；\n5. 结束应用图标联动（与鸣潮联动）。\n引擎更新：\n1. 支持 GamepadUI 奖励地图。",
         "versionType": "GitHub",
         "translator": "无翻译",
         "imageFileName": "banners/cache.png",
@@ -31,7 +31,7 @@
     },
     {
         "title": "2.0.09",
-        "intro": "更新内容: \n 1.ui部分重写 架构重写 \n 2.更新日志cfg编辑挂载目录功能 \n 3.修正部分错误 \n 引擎更新: \n 1.修正gamepadui错误 \n 2.支持挂载目录jni",
+        "intro": "更新内容：\n1. 重写 UI 界面及整体架构；\n2. 更新日志配置编辑挂载目录功能；\n3. 修复若干错误。\n引擎更新：\n1. 修复 GamepadUI 错误；\n2. 支持挂载目录 JNI。",
         "versionType": "GitHub",
         "translator": "无翻译",
         "imageFileName": "banners/cache.png",
